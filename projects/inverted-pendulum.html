@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inverted Pendulum — Sovin Herzlinger</title>
+<meta name="description" content="A cart-pole inverted pendulum built from scratch: a distributed two-Teensy CAN bus architecture running a 600 Hz distributed control loop on a velocity-commanded cart.">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#work">Work</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#work">&larr; Back to work</a>
+
+  <p class="eyebrow">Controls Lab &mdash; Design Project</p>
+  <h1>Inverted Pendulum</h1>
+  <p class="tagline" style="max-width:54ch">A cart-pole system built from scratch, balanced upright by an LQR controller running at 600&nbsp;Hz across two microcontrollers on a CAN bus.</p>
+
+  <h2>The system</h2>
+  <table class="kv">
+    <tr><td>Rail</td><td class="num">750 mm, of which 500 mm is working travel (&plusmn;250 mm about centre); the rest is safety margin</td></tr>
+    <tr><td>Pendulum</td><td class="num">0.31 m rod, 19.07 g PETG, 4 bearings (38.5 g) at the tip</td></tr>
+    <tr><td>Derived inertia</td><td class="num">I<sub>pivot</sub> = 4.31 &times; 10<sup>&minus;3</sup> kg&middot;m&sup2;, centre of mass 25.9 cm from pivot</td></tr>
+    <tr><td>Sensor node</td><td class="num">Teensy 4.0 on the cart &mdash; reads the encoder and transmits at <strong>600 Hz</strong></td></tr>
+    <tr><td>Control node</td><td class="num">Teensy 4.1 off-cart &mdash; <strong>600 Hz</strong> LQR loop</td></tr>
+    <tr><td>Actuation</td><td class="num">ODrive S1, velocity-commanded, saturated at 1200 mm/s</td></tr>
+    <tr><td>Catch / drop window</td><td class="num">&plusmn;0.30 rad (17&deg;) to engage, &plusmn;0.50 rad to give up</td></tr>
+  </table>
+
+  <p>The open-loop pendulum has an unstable pole at <strong>+5.82 rad/s</strong> — a time constant of about <strong>172 ms</strong>. That number sets the whole design budget: whatever the controller does, it has to do it meaningfully faster than the pendulum falls.</p>
+
+  <h2>Components</h2>
+  <table class="kv">
+    <tr><td>Sensor node</td><td class="num">Teensy 4.0 (on the cart)</td></tr>
+    <tr><td>Control node</td><td class="num">Teensy 4.1 (off-cart)</td></tr>
+    <tr><td>Angle encoder</td><td class="num">AS5600 &mdash; 12-bit contactless magnetic, 4096 counts/rev, read over I&sup2;C</td></tr>
+    <tr><td>Motor controller</td><td class="num">ODrive S1, velocity-control mode, 15 A limit during balancing</td></tr>
+    <tr><td>Motor</td><td class="num">Electric skateboard BLDC</td></tr>
+    <tr><td>Transmission</td><td class="num">24-tooth pulley, 5 mm pitch belt &rarr; 120 mm of cart travel per motor turn</td></tr>
+    <tr><td>Rail</td><td class="num">750 mm linear rail, belt-driven cart (~185 g)</td></tr>
+    <tr><td>Pendulum</td><td class="num">310 mm PETG rod (19.07 g) with 4 bearings (38.5 g) at the tip; encoder magnet at the pivot</td></tr>
+    <tr><td>Bus</td><td class="num">3-node CAN &mdash; SN65HVD230 transceivers, twisted pair, 120 &Omega; termination at each end</td></tr>
+    <tr><td>Interface boards</td><td class="num">Hand-soldered protoboards for both Teensy CAN interfaces</td></tr>
+    <tr><td>Host</td><td class="num">USB serial for live gain tuning and telemetry</td></tr>
+  </table>
+  <p>The three nodes &mdash; two microcontrollers and the motor controller &mdash; share one differential pair. The ODrive speaks CAN natively, so cart position and velocity come back over the same two wires that carry the pendulum angle.</p>
+
+  <h2>Why distributed control</h2>
+  <p>The pendulum angle has to be measured at the pivot, which rides on a cart accelerating hard in both directions. Running analogue sensor wiring the length of the rail on that cart is a good way to collect noise and eventually break a wire.</p>
+  <p>So the sensing happens where the sensor is. A <strong>Teensy 4.0 on the cart</strong> reads the AS5600 over I&sup2;C and publishes the angle on a CAN bus <strong>at 600 Hz</strong>. A <strong>Teensy 4.1</strong> off-cart receives it, reads cart position and velocity back from the ODrive on the same bus, runs the control law, and sends a velocity command. Three nodes, one differential pair, one cable to the moving part.</p>
+  <p>Both nodes run at 600 Hz, and they match on purpose. At lower rates the angle simply was not refreshing fast enough for the loop to hold the pendulum, so the sensor rate and the control rate were raised together &mdash; there is no benefit to closing a loop faster than the measurement it depends on, and no benefit to sampling faster than the loop consumes.</p>
+  <p>CAN earns its place here: differential signalling over twisted pair, with transceivers designed for electrically hostile environments, sharing one bus between two microcontrollers and a motor controller that already speaks it natively.</p>
+
+  <h2>Why LQR, not PID</h2>
+  <p>A cart-pole has <strong>four states</strong> — cart position, cart velocity, pendulum angle, pendulum angular velocity — and exactly <strong>one input</strong>. You cannot independently command where the cart is and where the pendulum points; the only way to move the pendulum is to move the cart out from under it.</p>
+  <p>Stacking PID loops means several controllers issuing competing demands to one actuator and hand-tuning the compromise. LQR solves for a single gain vector that minimises a quadratic cost across all four states at once, so the trade-off between "keep the pendulum up" and "don't run out of rail" lives in the cost weights instead of being discovered by trial and error.</p>
+
+  <h2>The gains that balance it</h2>
+  <p>The control law is one line &mdash; a dot product of the gain vector with the state error, saturated to what the drive can deliver:</p>
+<pre class="code"><span class="c">// State:  [x_mm, x_dot_mm_per_s, theta_err_rad, theta_dot_rad_per_s]</span>
+<span class="c">// Output: cart velocity command in mm/s</span>
+float u = -(K[0]*x + K[1]*x_dot + K[2]*th + K[3]*th_dot);</pre>
+  <p>The gains that balance the rig:</p>
+  <table class="kv">
+    <tr><td>K[0] &mdash; cart position</td><td class="num">&minus;1.25</td></tr>
+    <tr><td>K[1] &mdash; cart velocity</td><td class="num">&minus;2.73</td></tr>
+    <tr><td>K[2] &mdash; pendulum angle</td><td class="num">&minus;6000</td></tr>
+    <tr><td>K[3] &mdash; angular velocity</td><td class="num">&minus;800</td></tr>
+  </table>
+  <p>The magnitudes tell the story: angle error dominates by three orders of magnitude. The controller will happily give up cart position to save the pendulum, which is exactly the right priority &mdash; you can always walk the cart back to centre once the pendulum is safe.</p>
+  <p>Those values were never compiled in. The firmware exposes <code class="inline">k1</code>&hellip;<code class="inline">k4</code> over the serial link, so <strong>gains are editable while the pendulum is balancing</strong>. Re-flashing between attempts would have made finding four numbers slow enough that I probably wouldn't have found them.</p>
+
+  <h2>Designing the gains, and checking the model</h2>
+  <p>I wrote a design tool in Python (<code class="inline">numpy</code> + <code class="inline">scipy.linalg.solve_continuous_are</code>) that builds the linearised cart-pole from the measured hardware constants and solves the algebraic Riccati equation for a given Q and R:</p>
+<pre class="code"><span class="c"># linearised cart-pole, velocity-commanded cart with loop lag tau_v</span>
+a = m_p * G * l_cm / I_pivot        <span class="c"># instability term        = 33.89</span>
+b = -m_p * l_cm / I_pivot           <span class="c"># cart-pendulum coupling  = -3.45</span>
+
+A = [[0, 1,          0, 0      ],
+     [0, -1/TAU_V,   0, 0      ],
+     [0, 0,          0, 1      ],
+     [0, -b/TAU_V,   a, -d_visc]]
+B = [[0], [1/TAU_V], [0], [b/TAU_V]]
+
+P = solve_continuous_are(A, B, Q, R)
+K = np.linalg.solve(R, B.T @ P)</pre>
+  <p>The weak point is <code class="inline">TAU_V</code>, the time constant of the ODrive's inner velocity loop, which I never measured. The cart is <em>velocity</em>-commanded, so the pendulum only feels it through however fast that loop actually tracks &mdash; and a model resting on a guessed parameter deserves to be checked against the hardware rather than trusted.</p>
+  <p>It held up. Against the gains I converged on by hand on the rig:</p>
+  <table class="kv">
+    <tr><td></td><td class="num">tuned on the rig &nbsp;&middot;&nbsp; model &nbsp;&middot;&nbsp; error</td></tr>
+    <tr><td>K[0]</td><td class="num">&minus;1.25 &nbsp;&middot;&nbsp; &minus;1.00 &nbsp;&middot;&nbsp; 25%</td></tr>
+    <tr><td>K[1]</td><td class="num">&minus;2.73 &nbsp;&middot;&nbsp; &minus;2.39 &nbsp;&middot;&nbsp; 14%</td></tr>
+    <tr><td>K[2]</td><td class="num">&minus;6000 &nbsp;&middot;&nbsp; &minus;4609 &nbsp;&middot;&nbsp; 30%</td></tr>
+    <tr><td>K[3]</td><td class="num">&minus;800 &nbsp;&middot;&nbsp; &minus;801 &nbsp;&middot;&nbsp; <strong>0.2%</strong></td></tr>
+  </table>
+  <p>Every gain lands within 30% of the model, and the angular-velocity gain within a fifth of a percent. For a linearisation about upright, built on a guessed actuator time constant and hand-weighed parts, that is a much better result than I expected &mdash; and it means the model is now trustworthy enough to design <em>with</em>: I can change a Q weight and predict which way the rig will move.</p>
+
+  <div class="note">
+    <strong>Is it critically damped?</strong> No &mdash; it is <strong>overdamped</strong>, and not marginally. Substituting the running gains into the model puts all four closed-loop poles on the real axis at <strong>&minus;1.08, &minus;2.54, &minus;19.1 and &minus;80.7 s<sup>&minus;1</sup></strong>. There is no complex pair, so there is no oscillatory mode to have a damping ratio at all; critical damping would need repeated poles, and these are spread across nearly two decades. Settling is governed by the slowest one &mdash; &minus;1.08, a 0.92 s time constant &mdash; which is the cart easing back to centre long after the pendulum itself is upright. That is a deliberate trade: it buys a wide stability margin and a system that catches reliably rather than one that recovers fast and rings.
+  </div>
+
+  <h2>Firmware</h2>
+  <p>The main controller runs a four-mode state machine:</p>
+  <ul>
+    <li><strong>IDLE</strong> — motor disarmed.</li>
+    <li><strong>MANUAL</strong> — trapezoidal-trajectory moves for homing and calibration.</li>
+    <li><strong>ARMED</strong> — cart holds position while the pendulum is raised by hand.</li>
+    <li><strong>BALANCING</strong> — the 600 Hz LQR loop takes over, and hands back to ARMED if the angle leaves the drop window or the cart runs out of working rail.</li>
+  </ul>
+  <p>Bringing it up follows a fixed sequence. In <strong>MANUAL</strong> I zero both x and &theta; with the pendulum hanging perfectly straight down, which gives the angle a known reference; then I drive the cart to 250 mm, the centre of the working rail, so it has equal room to run in either direction. Then <strong>ARM</strong>, and lift the pendulum up by hand &mdash; once it enters the catch window the controller takes it.</p>
+  <p>Angular velocity isn't measured. It's finite-differenced from successive angle readings and smoothed with a first-order low-pass filter — enough to stop encoder quantisation being amplified into the derivative term without adding so much lag that the loop destabilises.</p>
+  
+  <h2>Build</h2>
+  <p>The cart, rail mounts and bearing assemblies were designed in CAD and assembled in-house; the CAN interfaces for both Teensys are hand-soldered protoboards. The rail and stand were built with my roommate, and we sourced the parts ourselves.</p>
+
+  <div class="note">
+    <strong>On tooling:</strong> I used GitHub Copilot and Claude for firmware assistance. The architecture decisions, the debugging, the LQR theory, the protocol design and the physical build were mine. AI handled boilerplate; the system-level work did not.
+  </div>
+
+  <p style="margin-top:40px"><a href="../index.html#work">&larr; Back to work</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+
+</body>
+</html>

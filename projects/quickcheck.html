@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickCheck — Sovin Herzlinger</title>
+<meta name="description" content="A campus club platform for Cal Poly Pomona: native iOS on Expo, Supabase Postgres, and per-club authorization enforced by row-level security instead of app code.">
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#work">Work</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#work">&larr; Back to work</a>
+
+  <p class="eyebrow">Solo project &middot; In beta</p>
+  <h1>QuickCheck</h1>
+  <p class="tagline" style="max-width:52ch">A campus club platform for Cal Poly Pomona — QR join, event check-in, roster and a cash dues ledger — with every authorization decision enforced by Postgres, not by the app.</p>
+
+  <table class="kv">
+    <tr><td>App</td><td>Expo SDK&nbsp;57, React Native&nbsp;0.86, React&nbsp;19, Expo Router (typed file routes), iPhone only</td></tr>
+    <tr><td>Backend</td><td>Supabase — Postgres with row-level security, SECURITY DEFINER RPCs, Realtime, Deno edge functions</td></tr>
+    <tr><td>Auth</td><td>Supabase Auth (email/password); roles are per&nbsp;(user,&nbsp;club), not per account</td></tr>
+    <tr><td>Data access</td><td>One module, <strong>src/services/db.js</strong> — screens never touch the Supabase client</td></tr>
+    <tr><td>Schema</td><td>34 SQL migrations, applied in filename order, each one a written argument for itself</td></tr>
+    <tr><td>Distribution</td><td>TestFlight, <strong>com.sherzlinger.quickcheck</strong>, version 2.2.0</td></tr>
+  </table>
+
+  <h2>What it is</h2>
+  <p>Students find clubs, join them, and check in to meetings. Officers run the roster, post announcements, schedule events and track cash dues from the same app. A prospective member at a club fair scans a QR code that opens a hosted web page — not the custom URL scheme it originally encoded, which was broken for exactly the audience that scans it: people who don't have the app yet.</p>
+  <p>Money is a deliberate non-feature. The app records cash a treasurer says they received; there is no card, Venmo or payment-processor integration, not even as a label. A member files a payment request against a charge; an officer clears it. Nothing moves money.</p>
+
+  <h2>Architecture</h2>
+  <p>There is no server of mine in the app's request path. A screen calls a function in <strong>db.js</strong>, that function calls Supabase, and Postgres decides whether the row may be read or written. That module is also a translation layer: the app was ported from Firestore, so it maps camelCase to snake_case both ways and keeps the old function names and return shapes, which is why the screens didn't change during the port.</p>
+  <p>Two client details are load-bearing and non-obvious. The Supabase client is created with an explicit <strong>processLock</strong>; supabase-js otherwise auto-selects <strong>navigator.locks</strong>, which is broken under Hermes, and <strong>getSession()</strong> then never resolves — the app hangs on the splash screen forever. And the publishable anon key ships inside the app on purpose: every table is RLS-guarded, so what a request can reach is decided by the caller's JWT and the policies, not by the key's secrecy.</p>
+
+  <h2>The data model, and where roles live</h2>
+  <p>The interesting table is <strong>memberships</strong>: one row per (user, club) pair, carrying that pair's own role — <strong>member</strong>, <strong>treasurer</strong> or <strong>admin</strong> — plus an active/removed status and a unique constraint on (user_id, org_id). One account can be an admin of one club and a plain member of another, and every check is scoped to the club being acted on.</p>
+  <p>That table has <em>no</em> INSERT, UPDATE or DELETE policy at all. It is readable by the person the row belongs to and by staff of that row's club; every write goes through a trigger or a SECURITY DEFINER function. That is the backend's whole pattern — when a client needs a column it's locked out of, the answer is a narrow SECURITY DEFINER function, not a wider policy.</p>
+
+  <h2>Authorization is in the database</h2>
+  <p>Three SECURITY DEFINER helpers — <strong>has_membership(org)</strong>, <strong>is_org_staff(org)</strong>, <strong>is_org_admin(org)</strong> — each answer one question against <strong>memberships</strong> for the calling user. SECURITY DEFINER so a policy on another table can call them without recursing into memberships' own RLS; STABLE so the planner evaluates them once per statement rather than once per row. A member's check-in insert is then guarded by <strong>has_membership(org_id) and user_id = auth.uid()</strong> — club-scoped and self-scoped in one predicate. Events are split in two: an ALL policy on <strong>is_org_admin(org_id)</strong> for writes, a separate SELECT policy on <strong>is_org_staff(org_id)</strong>, because a treasurer needs to read events for finance reports but was never shown a button to create one.</p>
+  <p>The policy I'd most want to be asked about is <strong>users_update</strong>. Its self-clause let you update your own row with no WITH CHECK, so a member could set <strong>role = 'admin'</strong> and <strong>org_id</strong> to any club. It was unreachable — but only because <strong>authenticated</strong> held no UPDATE grant on the table, and Postgres checks grants before RLS. That is not a property to depend on: the trigger mirroring <strong>users.role</strong> and <strong>users.org_id</strong> into a real <strong>memberships</strong> row is SECURITY DEFINER, and <strong>memberships</strong> is what every <strong>is_org_admin()</strong> call trusts. One GRANT — the day someone wants members to edit their own display name — and it becomes self-service admin of any club. I rewrote it while the door was still shut: a self-update must now leave <strong>role</strong>, <strong>org_id</strong> and <strong>secondary_memberships</strong> <em>not distinct from</em> their current values.</p>
+
+  <h2>The bug that reshaped the schema</h2>
+  <p>It surfaced on my own account: I couldn't change a member's role or remove them, and the app just said "not authorized". The root cause was one guard: <strong>auth_role() = 'admin' and auth_org_id() = (select org_id from users where id = p_user_id)</strong>. Both helpers read the <em>caller's primary club</em> off the <strong>users</strong> row, so the check was asking "is my primary club the same as their primary club?" — a question that stopped meaning anything once membership became a per-(user, club) row. I administer that club as a secondary membership; the member I was acting on held it as their primary. I moved the RPC onto <strong>is_org_admin(p_org_id)</strong> and gave it an explicit club argument.</p>
+  <p>That fix introduced a second bug the same day. Removing someone from their primary club nulled <strong>users.org_id</strong>, and because member-level policies still keyed off that column, it cut their access to every club they still belonged to. The repair: promote a club they still have instead of clearing the field.</p>
+  <p>The third act mattered most. <strong>has_membership()</strong> had existed for a week and was called by exactly zero policies: multi-club access had been built for staff only. A plain member whose tie to a club was a secondary membership could not check in to its events, read its announcements, or submit an excuse. It was invisible in development because every account used to build the app was staff in every club, which the staff policies already covered. The fix was a set of additive permissive policies keyed on <strong>has_membership()</strong>, each mirroring the primary-club policy it shadows.</p>
+  <p>One trap runs through all of it: <strong>an RLS refusal is a silent success.</strong> A blocked DELETE returns zero rows and no error, indistinguishable from a filter that matched nothing, so a try/catch never fires. Destructive writes re-read afterwards and say so if the change didn't take.</p>
+
+  <h2>Shipping against a backend every build shares</h2>
+  <p>There is no version gate between the database and the app: a migration that tightens a policy affects the build already in a tester's pocket, immediately. That drives the migration style. New rules are added as <em>permissive</em> policies rather than rewrites, since Postgres OR-combines them — adding one can widen access but never break what already works. RPC overloads a shipped build still calls stay alive, because a dropped function is a crash where a refusal would have been a message. So when review found the legacy two-argument <strong>set_member_role</strong> bypassing a newer guard — the one refusing to demote a club's last admin, an unrecoverable state since every recovery path itself needs an admin — I rewrote its body to delegate to the guarded version rather than deleting it.</p>
+
+  <div class="note">
+    <strong>On tooling and review:</strong> I used Claude while building this, and had two AI reviewers sweep the backend policies and the client bundle in parallel. Every backend finding was reproduced against the live database inside an aborted transaction before I touched anything. The fixes are mine; so are the schema design, the multi-club model and the debugging.
+  </div>
+
+  <p style="margin-top:40px"><a href="../index.html#work">&larr; Back to work</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+
+</body>
+</html>
