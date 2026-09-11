@@ -311,3 +311,7 @@ code.inline {
   letter-spacing: .08em; text-transform: uppercase; color: var(--text-mute);
 }
 @media (max-width: 560px) { .gallery { padding: 20px 16px 18px; gap: 12px; } .gallery img { height: 300px; } }
+
+/* Photo strip: same scroller as the app gallery, sized for square photos */
+.gallery.photos img { height: 270px; border-radius: 10px; }
+@media (max-width: 560px) { .gallery.photos img { height: 210px; } }
