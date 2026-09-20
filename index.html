@@ -149,7 +149,7 @@
             <span class="tag">Complete</span>
           </div>
           <p class="proj-role">Controls lab design project &middot; mechanical design, firmware, controls</p>
-          <p class="desc">A 750&nbsp;mm cart-pole system built from scratch, balanced upright by a linear-quadratic regulator running across two microcontrollers on a CAN bus.</p>
+          <p class="desc">A 750&nbsp;mm cart-pole system built from scratch, balanced upright by a linear-quadratic regulator running across two Teensy microcontrollers, driving an ODrive S1 over a CAN bus.</p>
           <ul>
             <li>CAD'd the rail, cart and bearing assemblies, sourced the parts and <strong>hand-soldered the CAN protoboards</strong>.</li>
             <li><strong>Distributed control architecture:</strong> a cart-side Teensy 4.0 reads pendulum angle from an AS5600 magnetic encoder over I²C and transmits it at 600&nbsp;Hz over a CAN bus to a Teensy 4.1, which closes a 600&nbsp;Hz loop and commands an ODrive S1.</li>
