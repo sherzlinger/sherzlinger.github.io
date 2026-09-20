@@ -37,7 +37,7 @@
 
   <h2>The constraint that decides everything</h2>
   <p>This screen is read at speed, through a tinted visor, in direct sun, by someone in gloves who must not look at it for more than a fraction of a second. Everything else follows from that.</p>
-  <p><strong>Almost nothing can be on screen</strong> &mdash; arrow, distance, street, progress bar &mdash; in amber and white on pure black. Distance rounds in 25&nbsp;ft, then 50&nbsp;ft, then tenth-of-a-mile steps, because a number that changes every frame cannot be read in a glance. Long street names abbreviate, then shrink through three font sizes, then ellipsise; a marquee was explicitly ruled out.</p>
+  <p><strong>Almost nothing can be on screen</strong> &mdash; arrow, distance, street, progress bar &mdash; in amber and white on pure black. Distance rounds in 25&nbsp;ft, then 50&nbsp;ft, then tenth-of-a-mile steps, because a number that changes every frame cannot be read in a glance. Long street names abbreviate, then shrink through three font sizes, then ellipsize; a marquee was explicitly ruled out.</p>
   <p>The mount is an engineering problem rather than a box: survive handlebar vibration &mdash; damping and strain relief on the battery leads matter more than wall thickness &mdash; while keeping USB-C reachable without opening the case, the antenna corner clear of metal, the panel tilted to the rider's eyeline, and the two buttons far enough apart that a gloved hand cannot hit both.</p>
 
   <img src="../assets/img/motonav.jpg" alt="The MotoNav unit clamped above a motorcycle's instrument cluster, its black screen showing an amber left arrow, 350 ft, and Indian Hill Boulevard" style="width:100%;border-radius:6px;border:1px solid var(--line);margin:24px 0">
@@ -53,7 +53,7 @@
   <p>The idle flag exists for the same reason: the board cannot otherwise tell "no destination picked" from "the phone went quiet".</p>
 
   <h2>The wire protocol</h2>
-  <p>Phone is central, ESP32 is peripheral, one write characteristic. A packet is a 9-byte header plus an optional street name: maneuver code (0&ndash;8), distance as uint16 little-endian <strong>metres</strong>, flags, next maneuver, step index and count, ETA in seconds, then up to 40 bytes of UTF-8. MTU is negotiated to 185, since BLE's default 23 leaves 20 usable bytes.</p>
+  <p>Phone is central, ESP32 is peripheral, one write characteristic. A packet is a 9-byte header plus an optional street name: maneuver code (0&ndash;8), distance as uint16 little-endian <strong>meters</strong>, flags, next maneuver, step index and count, ETA in seconds, then up to 40 bytes of UTF-8. MTU is negotiated to 185, since BLE's default 23 leaves 20 usable bytes.</p>
   <ul>
     <li><strong>The street has no length prefix and no terminator</strong>, so it runs to the end of the packet and nothing can follow it. Adding step index and ETA meant inserting them <em>before</em> it &mdash; a breaking change: an old board fed a new packet reads the step byte as the street's first letter.</li>
     <li><strong>There is no maneuver code 9.</strong> An earlier draft listed one for "recalculating", but the firmware clamps out-of-range codes to straight-ahead &mdash; 9 would draw a confident forward arrow at the moment the phone is lost. A reroute is a flag bit.</li>
@@ -63,18 +63,18 @@
 
   <h2>Two apps, one engine</h2>
   <p>Both apps share one design &mdash; location feeds a nav engine, a session owns the 1&nbsp;Hz clock, a link object owns the radio &mdash; and emit byte-identical packets checked against the same fixtures. What differs is each platform's rules.</p>
-  <p><strong>Android permits exactly one outstanding GATT operation per connection.</strong> Fire a second before the first calls back and it is dropped silently, which presents as "the arrow froze" rather than as an error. So the Kotlin link serialises every write, descriptor and MTU request through one watchdogged queue, and a pending nav write is <em>replaced</em> rather than queued: at 1&nbsp;Hz a delayed packet is already stale, and a backlog of stale turns is worse than a skipped one. iOS needs none of that. Background location splits the same way &mdash; three separate iOS settings against an Android foreground service &mdash; and on either platform, miss one part and the fixes stop once the screen locks.</p>
+  <p><strong>Android permits exactly one outstanding GATT operation per connection.</strong> Fire a second before the first calls back and it is dropped silently, which presents as "the arrow froze" rather than as an error. So the Kotlin link serializes every write, descriptor and MTU request through one watchdogged queue, and a pending nav write is <em>replaced</em> rather than queued: at 1&nbsp;Hz a delayed packet is already stale, and a backlog of stale turns is worse than a skipped one. iOS needs none of that. Background location splits the same way &mdash; three separate iOS settings against an Android foreground service &mdash; and on either platform, miss one part and the fixes stop once the screen locks.</p>
   <p>Android was briefly swapped to Google's Routes API and swapped back, on a fact checked against Google's own reference rather than assumed: <strong>no road-name field exists anywhere in a Google step</strong>, so the street would have to be parsed out of an English sentence. The finished Google client is kept and tested; swapping one line is the whole A/B.</p>
 
   <h2>What the road test broke</h2>
   <p>Riding it found five defects the build and the checks could not. Those documented in detail:</p>
   <ul>
-    <li><strong>The greys are unreadable in sun.</strong> Measured against the firmware's own colour constants, three fail a luminance band everything on screen was meant to clear.</li>
+    <li><strong>The grays are unreadable in sun.</strong> Measured against the firmware's own color constants, three fail a luminance band everything on screen was meant to clear.</li>
     <li><strong>Freeway naming is one line backwards.</strong> Preferring Mapbox's name over its ref puts "San Bernardino Freeway; Route 10" on the bars when the sign says I&nbsp;10.</li>
     <li><strong>Ramps return an empty name <em>and</em> an empty ref</strong> &mdash; a blank street line. Nobody reported that one; it fell out of pulling real Mapbox JSON from four routes afterwards.</li>
     <li><strong>Exit numbers are on the wire and completely unread</strong>, so the board shows the freeway's name instead of "Exit 64 &middot; Sierra Ave".</li>
   </ul>
-  <p>The fix is a stripped layout: bigger arrow left, distance and street stacked right, bar full-bleed at the bottom, and the status bar, "then" preview and step counter gone while a route runs. Two of the three sunlight defects go with them, since those greys are only used by the parts being deleted.</p>
+  <p>The fix is a stripped layout: bigger arrow left, distance and street stacked right, bar full-bleed at the bottom, and the status bar, "then" preview and step counter gone while a route runs. Two of the three sunlight defects go with them, since those grays are only used by the parts being deleted.</p>
 
   <h2>Where it actually stands</h2>
   <p>Mid-redesign, blocked on two decisions rather than on code. Amber arrow or everything white: the amber fails the numeric brightness band while sitting at 12:1 contrast on black, and outdoors that band measures the wrong thing. And whether the destination gets a header at all, asked for and then contradicted by "cut everything except distance, street, arrow and bar".</p>
