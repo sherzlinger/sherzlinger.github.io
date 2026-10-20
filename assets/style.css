@@ -316,10 +316,30 @@ code.inline {
 .gallery.photos img { height: 270px; border-radius: 10px; }
 @media (max-width: 560px) { .gallery.photos img { height: 210px; } }
 
-/* Simulation video at the head of a photo strip: square, larger than the photos */
-.gallery.photos { align-items: flex-end; }
-.gallery figure.sim video {
-  display: block; height: 360px; width: 360px; object-fit: cover;
+/* Build card: simulation video beside a 2x2 grid of square photos, both the same height */
+.build-media {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  padding: 22px 24px; background: #05070a; border-bottom: 1px solid var(--line-soft);
+}
+.build-media figure { margin: 0; position: relative; }
+.build-media .sim video {
+  display: block; width: 100%; aspect-ratio: 1; object-fit: cover;
   border-radius: 10px; border: 1px solid var(--line); background: #0a0c0f;
 }
-@media (max-width: 560px) { .gallery figure.sim video { height: 300px; width: 300px; } }
+.build-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.build-photos a { display: block; }
+.build-photos img {
+  display: block; width: 100%; aspect-ratio: 1; object-fit: cover;
+  border-radius: 10px; border: 1px solid var(--line); transition: border-color .15s;
+}
+.build-photos a:hover img { border-color: var(--accent); }
+.build-media figcaption {
+  position: absolute; left: 8px; bottom: 8px; padding: 3px 7px; border-radius: 4px;
+  background: rgba(5,7,10,.72); font-family: var(--mono); font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text);
+}
+.build-media .sim figcaption { left: auto; right: 8px; top: 8px; bottom: auto; }
+@media (max-width: 700px) {
+  .build-media { grid-template-columns: 1fr; padding: 16px; gap: 10px; }
+  .build-photos { gap: 10px; }
+}
