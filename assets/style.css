@@ -315,3 +315,11 @@ code.inline {
 /* Photo strip: same scroller as the app gallery, sized for square photos */
 .gallery.photos img { height: 270px; border-radius: 10px; }
 @media (max-width: 560px) { .gallery.photos img { height: 210px; } }
+
+/* Simulation video at the head of a photo strip: square, larger than the photos */
+.gallery.photos { align-items: flex-end; }
+.gallery figure.sim video {
+  display: block; height: 360px; width: 360px; object-fit: cover;
+  border-radius: 10px; border: 1px solid var(--line); background: #0a0c0f;
+}
+@media (max-width: 560px) { .gallery figure.sim video { height: 300px; width: 300px; } }

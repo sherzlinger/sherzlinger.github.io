@@ -164,6 +164,29 @@
         </div>
       </article>
 
+      <!-- 1b. CYCLOIDAL DRIVE -->
+      <article class="proj gallery-card">
+        <div class="gallery photos"><figure class="sim"><video src="assets/img/cycloid-sim.mp4" poster="assets/img/cycloid-sim.jpg" autoplay loop muted playsinline preload="metadata" aria-label="Simulation of the 10:1 cycloidal reducer: the cycloid disc wobbles on the eccentric input while the output turns once for every ten input turns, then the assembly explodes into its parts and closes back up"></video><figcaption>Simulation &middot; exploded view</figcaption></figure><figure><img src="assets/img/cycloid-assembled.jpg" alt="The printed cycloidal reducer assembled on top of the motor, with the ring-roller bearings visible between the base and the top plate"><figcaption>Assembled</figcaption></figure><figure><img src="assets/img/cycloid-rollers.jpg" alt="Close-up of the ring-roller stacks: bearings on printed spacers around the cycloid disc"><figcaption>Ring rollers</figcaption></figure><figure><img src="assets/img/cycloid-top.jpg" alt="Top view of the reducer's output, with the bearing cap and the output plate's screw pattern"><figcaption>Output</figcaption></figure><figure><img src="assets/img/cycloid-motor.jpg" alt="Underside of the reducer showing the ODrive M8325s motor and its mounting plate"><figcaption>M8325s mount</figcaption></figure></div>
+        <div class="proj-body">
+          <div class="proj-top">
+            <h3>Cycloidal Drive</h3>
+            <span class="tag">Built</span>
+          </div>
+          <p class="proj-role">Team project &middot; 10:1 reducer on an ODrive M8325s</p>
+          <p class="desc">A 10:1 cycloidal reducer for a pan axis, 3D printed and mounted directly on an ODrive M8325s brushless motor. The geometry comes from a parametric generator that builds every part as solid CAD, checks the assembly for collisions through a full turn of the input, and exports toleranced print files.</p>
+          <ul>
+            <li><strong>11 ring rollers</strong> (624 bearings), 1.5&nbsp;mm eccentricity, a &Oslash;122&nbsp;mm housing, and 8 output pins running on 693 bearings; 6808 bearings carry the input and output.</li>
+            <li>Built <strong>in place on the motor</strong>: the eccentric hub bolts to the rotor face, the output reuses the motor's own 4 &times; M3 pattern, so the pan plate moves from the motor to the reducer unchanged.</li>
+            <li>The design passed both a fast swept clearance check (every 1&deg; of a full input turn) and an exact solid-boolean check before printing; press fits were tuned on printed test coupons.</li>
+            <li>The animation is the generator's own model of this build: ten input turns, one output turn.</li>
+          </ul>
+          <div class="stack">
+            <span class="chip">Cycloidal drive</span><span class="chip">ODrive M8325s</span><span class="chip">Python</span><span class="chip">build123d</span>
+            <span class="chip">three.js</span><span class="chip">3D printing</span>
+          </div>
+        </div>
+      </article>
+
       <!-- 2. QUICKCHECK -->
       <article class="proj gallery-card">
         <div class="gallery"><figure><img src="assets/img/qc-login.png?v=3" alt="QuickCheck sign-in screen"><figcaption>Sign in</figcaption></figure><figure><img src="assets/img/qc-home.png?v=3" alt="QuickCheck home screen: greeting, admin badge, week calendar, check-in and balance"><figcaption>Home</figcaption></figure><figure><img src="assets/img/qc-discover.png?v=3" alt="QuickCheck discover screen for browsing campus clubs"><figcaption>Discover</figcaption></figure><figure><img src="assets/img/qc-calendar.png?v=3" alt="QuickCheck calendar showing events across a member's clubs"><figcaption>Calendar</figcaption></figure><figure><img src="assets/img/qc-manage.png?v=3" alt="QuickCheck manage screen with club requests, finances, reports and members"><figcaption>Manage</figcaption></figure></div>
