@@ -343,3 +343,18 @@ code.inline {
   .build-media { grid-template-columns: 1fr; padding: 16px; gap: 10px; }
   .build-photos { gap: 10px; }
 }
+
+/* Article photo grid: portrait build photos, four across, two on a phone */
+.photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 6px 0 8px; }
+.photo-grid a { display: block; min-width: 0; }
+.photo-grid figure { margin: 0; }
+.photo-grid img {
+  display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover;
+  border-radius: 8px; border: 1px solid var(--line); transition: border-color .15s;
+}
+.photo-grid a:hover img { border-color: var(--accent); }
+.photo-grid figcaption {
+  margin-top: 7px; font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--text-mute);
+}
+@media (max-width: 640px) { .photo-grid { grid-template-columns: 1fr 1fr; } }
