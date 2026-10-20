@@ -322,7 +322,7 @@ code.inline {
   padding: 22px 24px; background: #05070a; border-bottom: 1px solid var(--line-soft);
 }
 .build-media figure { margin: 0; position: relative; }
-.build-media .sim video {
+.build-media .sim video, .build-media .sim img {
   display: block; width: 100%; aspect-ratio: 1; object-fit: cover;
   border-radius: 10px; border: 1px solid var(--line); background: #0a0c0f;
 }
