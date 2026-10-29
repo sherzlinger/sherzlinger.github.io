@@ -393,3 +393,11 @@ code.inline {
   html { scroll-behavior: auto; }
   .card, .card:hover { transition: none; transform: none; }
 }
+
+/* 10-29 review from the rendered page: bigger project cards (2-up, like the featured row), full sentences */
+.card-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.card-text { -webkit-line-clamp: 3; line-clamp: 3; }
+.row .card-text { -webkit-line-clamp: 2; line-clamp: 2; }
+.row { min-width: 0; }
+.row > * { min-width: 0; }
+@media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
