@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Sovin Herzlinger — Controls &amp; Embedded Engineering">
 <meta name="twitter:description" content="Distributed control systems, embedded hardware, and the software that drives them.">
 <meta name="twitter:image" content="https://sherzlinger.github.io/assets/img/og.png">
-<link rel="stylesheet" href="assets/style.css?v=4">
+<link rel="stylesheet" href="assets/style.css?v=5">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
 </head>
 <body>
@@ -25,10 +25,8 @@
   <div class="nav-in">
     <span class="nav-name">Sovin Herzlinger</span>
     <a class="nav-link" href="#now">Experience</a>
-    <a class="nav-link" href="#research">Research</a>
     <a class="nav-link" href="#work">Work</a>
     <a class="nav-link" href="#skills">Skills</a>
-    <a class="nav-link" href="#certs">Certifications</a>
     <a class="nav-link" href="#contact">Contact</a>
   </div>
 </nav>
@@ -37,8 +35,13 @@
   <div class="wrap hero-grid">
     <div>
       <p class="eyebrow">Controls &amp; Embedded Systems</p>
-      <h1>Sovin<br>Herzlinger</h1>
+      <h1>Sovin Herzlinger</h1>
       <p class="tagline">I build distributed control systems, embedded hardware, and the software that drives them.</p>
+      <ul class="creds">
+        <li><span><strong>Systems Engineer</strong> at an early-stage hardware startup</span></li>
+        <li><span><strong>Researcher</strong>, transcutaneous spinal stimulation at Casa Colina Hospital</span></li>
+        <li><span><strong>Research</strong> in single-photon optical communication at a national research lab</span></li>
+      </ul>
       <p class="lede">Electromechanical Systems Engineering Technology at <strong>Cal Poly Pomona, class of '27</strong>. <a href="projects/about.html">More about me &rarr;</a></p>
       <div class="meta-row">
         <span>Pomona &amp; Saratoga, CA</span><span class="sep">/</span>
@@ -47,7 +50,7 @@
       </div>
     </div>
     <div>
-      <img class="portrait" src="assets/img/headshot.jpg?v=4" alt="Sovin Herzlinger">
+      <img class="portrait" src="assets/img/headshot.jpg?v=4" alt="Sovin Herzlinger" width="536" height="732">
     </div>
   </div>
 </header>
@@ -56,44 +59,39 @@
 
 <section id="now">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">01</span><h2>Experience</h2></div>
-    <p class="sec-sub"></p>
-    <div class="sum-grid">
-      <article class="sum" id="startup">
-        
-        <div class="sum-body">
-          <div class="proj-top"><h3>Systems Engineer</h3><span class="tag live">Current</span></div>
-          <p class="proj-role">Early-stage hardware startup &middot; Apr 2025 &ndash; present</p>
-          <p class="sum-text">Systems engineering at an early-stage hardware company, across a wider scope than the title suggests.</p>
-          <a class="more" href="projects/systems-engineer.html" aria-label="See more: Systems Engineer">See more &rarr;</a>
-        </div>
-      </article>
+    <div class="sec-intro">
+      <div class="sec-head"><span class="sec-num">01</span><h2 id="research">Experience &amp; research</h2></div>
     </div>
-  </div>
-</section>
 
-<section id="research">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-num">02</span><h2>Research</h2></div>
-    <p class="sec-sub">Two research projects: single-photon optical communication at a national research lab, and clinical neurostimulation at Casa Colina Hospital.</p>
-    <div class="sum-grid">
-      <article class="sum" id="optical">
-        
-        <div class="sum-body">
-          <div class="proj-top"><h3>Single-Photon Optical Communication</h3><span class="tag live">Ongoing</span></div>
-          <p class="proj-role">Research &middot; National research lab &middot; Sept 2026 &ndash; present</p>
-          <p class="sum-text">Free-space optical communication in the photon-starved regime &mdash; where the receiver counts individual photons rather than measuring a continuous optical power.</p>
-          <a class="more" href="projects/optical-communication.html" aria-label="See more: Single-Photon Optical Communication">See more &rarr;</a>
+    <article class="card lg wide" id="stimulation">
+      <div class="media">
+        <video src="assets/img/research.mp4" poster="assets/img/research.jpg?v=4" muted loop playsinline preload="metadata" data-autoplay style="object-position:50% 55%" aria-label="Surface electrodes on a forearm wired to a custom electrode array, with six channels of live EMG on the monitor above"></video>
+        <span class="tag live">Ongoing</span>
+      </div>
+      <div class="card-body">
+        <h3>Transcutaneous Spinal Stimulation</h3>
+        <p class="meta">Researcher &middot; Casa Colina Hospital &middot; Feb 2026 &ndash; present</p>
+        <p class="card-text">A custom transcutaneous spinal cord stimulation device for stroke rehabilitation.</p>
+        <a class="more" href="projects/spinal-stimulation.html" aria-label="See more: Transcutaneous Spinal Stimulation">See more &rarr;</a>
+      </div>
+    </article>
+
+    <div class="rows">
+      <article class="row" id="startup">
+        <div>
+          <h3>Systems Engineer</h3>
+          <p class="meta">Early-stage hardware startup &middot; Apr 2025 &ndash; present</p>
+          <p class="card-text">Systems engineering at an early-stage hardware company, across a wider scope than the title suggests.</p>
         </div>
+        <div class="row-side"><span class="tag live">Current</span><a class="more" href="projects/systems-engineer.html" aria-label="See more: Systems Engineer">See more &rarr;</a></div>
       </article>
-      <article class="sum has-img" id="stimulation">
-        <div class="sum-media"><video src="assets/img/research.mp4" poster="assets/img/research.jpg?v=4" autoplay muted loop playsinline preload="metadata" aria-label="Surface electrodes on a forearm wired to a custom electrode array, with six channels of live EMG on the monitor above"></video></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>Transcutaneous Spinal Stimulation</h3><span class="tag live">Ongoing</span></div>
-          <p class="proj-role">Researcher &middot; Casa Colina Hospital &middot; Feb 2026 &ndash; present</p>
-          <p class="sum-text">A custom transcutaneous spinal cord stimulation device for stroke rehabilitation.</p>
-          <a class="more" href="projects/spinal-stimulation.html" aria-label="See more: Transcutaneous Spinal Stimulation">See more &rarr;</a>
+      <article class="row" id="optical">
+        <div>
+          <h3>Single-Photon Optical Communication</h3>
+          <p class="meta">Research &middot; National research lab &middot; Sept 2026 &ndash; present</p>
+          <p class="card-text">Free-space optical communication in the photon-starved regime &mdash; where the receiver counts individual photons rather than measuring a continuous optical power.</p>
         </div>
+        <div class="row-side"><span class="tag live">Ongoing</span><a class="more" href="projects/optical-communication.html" aria-label="See more: Single-Photon Optical Communication">See more &rarr;</a></div>
       </article>
     </div>
   </div>
@@ -101,80 +99,111 @@
 
 <section id="work">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">03</span><h2>Selected work</h2></div>
-    <p class="sec-sub">Hardware and software I designed and built. Where something shipped to real users or ran on real hardware, I've said so.</p>
-    <div class="sum-grid">
-      <article class="sum has-img" id="pendulum">
-        <div class="sum-media"><img src="assets/img/pendulum.jpg?v=4" alt="The inverted pendulum rig: a linear rail with a belt-driven cart on a 3D-printed truss base, wired to the motor and encoder" loading="lazy"></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>Inverted Pendulum</h3><span class="tag">Complete</span></div>
-          <p class="proj-role">Controls lab design project &middot; Mar &ndash; May 2026</p>
-          <p class="sum-text">A 750&nbsp;mm cart-pole system built from scratch, balanced upright by a linear-quadratic regulator running across two Teensy microcontrollers, driving an ODrive S1 over a CAN bus.</p>
+    <div class="sec-intro">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Selected work</h2></div>
+      <p class="sec-sub">Hardware and software I designed and built. Where something shipped to real users or ran on real hardware, I've said so.</p>
+    </div>
+
+    <div class="feature-grid">
+      <article class="card lg" id="pendulum">
+        <div class="media">
+          <img src="assets/img/pendulum.jpg?v=4" style="object-position:50% 60%" alt="The inverted pendulum rig: a linear rail with a belt-driven cart on a 3D-printed truss base, wired to the motor and encoder">
+          <span class="tag">Complete</span>
+        </div>
+        <div class="card-body">
+          <h3>Inverted Pendulum</h3>
+          <p class="meta">Controls lab design project &middot; Mar &ndash; May 2026</p>
+          <p class="card-text">A 750&nbsp;mm cart-pole system built from scratch, balanced upright by a linear-quadratic regulator running across two Teensy microcontrollers, driving an ODrive S1 over a CAN bus.</p>
           <a class="more" href="projects/inverted-pendulum.html" aria-label="See more: Inverted Pendulum">See more &rarr;</a>
         </div>
       </article>
-      <article class="sum has-img" id="cycloidal">
-        <div class="sum-media"><video src="assets/img/cycloid-sim.mp4" poster="assets/img/cycloid-sim.jpg?v=2" autoplay muted loop playsinline preload="metadata" aria-label="Simulation of the 10:1 cycloidal reducer"></video></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>Cycloidal Drive</h3><span class="tag">Built</span></div>
-          <p class="proj-role">Team project &middot; 10:1 reducer on an ODrive M8325s</p>
-          <p class="sum-text">A 10:1 cycloidal reducer for a pan axis, 3D printed and mounted directly on an ODrive M8325s brushless motor.</p>
+      <article class="card lg" id="cycloidal">
+        <div class="media">
+          <video src="assets/img/cycloid-sim.mp4" poster="assets/img/cycloid-sim.jpg?v=2" muted loop playsinline preload="metadata" data-autoplay style="object-position:50% 30%" aria-label="Simulation of the 10:1 cycloidal reducer"></video>
+          <span class="tag">Built</span>
+        </div>
+        <div class="card-body">
+          <h3>Cycloidal Drive</h3>
+          <p class="meta">Team project &middot; 10:1 reducer on an ODrive M8325s</p>
+          <p class="card-text">A 10:1 cycloidal reducer for a pan axis, 3D printed and mounted directly on an ODrive M8325s brushless motor.</p>
           <a class="more" href="projects/cycloidal-drive.html" aria-label="See more: Cycloidal Drive">See more &rarr;</a>
         </div>
       </article>
-      <article class="sum has-img" id="quickcheck">
-        <div class="sum-media"><img class="contain" src="assets/img/qc-home.png?v=3" alt="QuickCheck home screen: greeting, admin badge, week calendar, check-in and balance" loading="lazy"></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>QuickCheck</h3><span class="tag live">In beta</span></div>
-          <p class="proj-role">iOS app, backend, database security</p>
-          <p class="sum-text">A campus club platform for Cal Poly Pomona &mdash; QR check-in, membership and dues tracking. Native iOS, in external TestFlight beta.</p>
+    </div>
+
+    <div class="card-grid">
+      <article class="card" id="quickcheck">
+        <div class="media device">
+          <div class="device-strip two">
+            <img src="assets/img/qc-home.png?v=3" alt="QuickCheck home screen: greeting, admin badge, week calendar, check-in and balance" loading="lazy">
+            <img src="assets/img/qc-calendar.png?v=3" alt="QuickCheck calendar showing events across a member's clubs" loading="lazy">
+          </div>
+          <span class="tag live">In beta</span>
+        </div>
+        <div class="card-body">
+          <h3>QuickCheck</h3>
+          <p class="meta">iOS app, backend, database security</p>
+          <p class="card-text">A campus club platform for Cal Poly Pomona &mdash; QR check-in, membership and dues tracking. Native iOS, in external TestFlight beta.</p>
           <a class="more" href="projects/quickcheck.html" aria-label="See more: QuickCheck">See more &rarr;</a>
         </div>
       </article>
-      <article class="sum has-img" id="aeon">
-        <div class="sum-media"><img class="contain" src="assets/img/aeon.png" alt="The AEON tab of my iOS app, showing live home-server telemetry, a particle orb and a voice input bar" loading="lazy"></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>AEON</h3><span class="tag live">Running daily</span></div>
-          <p class="proj-role">Personal project &middot; self-hosted</p>
-          <p class="sum-text">A personal AI assistant running on my own home server. It takes actions rather than just answering &mdash; and because it runs on hardware I own, my data stays on it.</p>
-          <a class="more" href="projects/aeon.html" aria-label="See more: AEON">See more &rarr;</a>
+      <article class="card" id="motonav">
+        <div class="media">
+          <img src="assets/img/motonav.jpg" style="object-position:50% 28%" alt="MotoNav display mounted on motorcycle handlebars showing a left turn in 350 feet onto Indian Hill Boulevard" loading="lazy">
+          <span class="tag wip">Road-tested, in redesign</span>
         </div>
-      </article>
-      <article class="sum has-img" id="motonav">
-        <div class="sum-media"><img src="assets/img/motonav.jpg" alt="MotoNav display mounted on motorcycle handlebars showing a left turn in 350 feet onto Indian Hill Boulevard" loading="lazy"></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>MotoNav</h3><span class="tag wip">Road-tested, in redesign</span></div>
-          <p class="proj-role">Firmware, iOS + Android apps, enclosure design</p>
-          <p class="sum-text">A handlebar-mounted turn-by-turn display for a motorcycle. The phone stays in your pocket and does the routing; the bar unit shows only the one thing you need next.</p>
+        <div class="card-body">
+          <h3>MotoNav</h3>
+          <p class="meta">Firmware, iOS + Android apps, enclosure design</p>
+          <p class="card-text">A handlebar-mounted turn-by-turn display for a motorcycle. The phone stays in your pocket and does the routing; the bar unit shows only the one thing you need next.</p>
           <a class="more" href="projects/motonav.html" aria-label="See more: MotoNav">See more &rarr;</a>
         </div>
       </article>
-      <article class="sum" id="gimbal">
-        
-        <div class="sum-body">
-          <div class="proj-top"><h3>Two-Axis Camera Gimbal</h3><span class="tag wip">Design study</span></div>
-          <p class="proj-role">Mechanical design, motor control &middot; supports the optical communication research</p>
-          <p class="sum-text">A direct-drive two-axis pointing platform for the optical communication work above &mdash; built for precise tracking, not handheld stabilization.</p>
-          <a class="more" href="projects/gimbal.html" aria-label="See more: Two-Axis Camera Gimbal">See more &rarr;</a>
+      <article class="card" id="aeon">
+        <div class="media device">
+          <div class="device-strip">
+            <img src="assets/img/aeon.png" alt="The AEON tab of my iOS app, showing live home-server telemetry, a particle orb and a voice input bar" loading="lazy">
+          </div>
+          <span class="tag live">Running daily</span>
+        </div>
+        <div class="card-body">
+          <h3>AEON</h3>
+          <p class="meta">Personal project &middot; self-hosted</p>
+          <p class="card-text">A personal AI assistant running on my own home server. It takes actions rather than just answering &mdash; and because it runs on hardware I own, my data stays on it.</p>
+          <a class="more" href="projects/aeon.html" aria-label="See more: AEON">See more &rarr;</a>
         </div>
       </article>
-      <article class="sum" id="server">
-        
-        <div class="sum-body">
-          <div class="proj-top"><h3>Self-Hosted Server Infrastructure</h3><span class="tag live">Live</span></div>
-          <p class="proj-role">Solo &middot; systems and reliability</p>
-          <p class="sum-text">The home server everything else I build runs on. Treated as production, because for me it is.</p>
-          <a class="more" href="projects/server-infrastructure.html" aria-label="See more: Self-Hosted Server Infrastructure">See more &rarr;</a>
+      <article class="card" id="fpv">
+        <div class="media">
+          <img src="assets/img/drone-1.jpg?v=1" style="object-position:50% 85%" alt="The 5-inch FPV quad packed in its case with batteries and props" loading="lazy">
+          <span class="tag">Complete</span>
         </div>
-      </article>
-      <article class="sum has-img" id="fpv">
-        <div class="sum-media"><img src="assets/img/drone-1.jpg?v=1" alt="The 5-inch FPV quad packed in its case with batteries and props" loading="lazy"></div>
-        <div class="sum-body">
-          <div class="proj-top"><h3>FPV Drone Build</h3><span class="tag">Complete</span></div>
-          <p class="proj-role">Mechanical assembly, electronics, tuning</p>
-          <p class="sum-text">A 5-inch FPV freestyle quadcopter assembled from a parts kit &mdash; full mechanical build, every ESC, FC, VTX and motor connection soldered by hand.</p>
+        <div class="card-body">
+          <h3>FPV Drone Build</h3>
+          <p class="meta">Mechanical assembly, electronics, tuning</p>
+          <p class="card-text">A 5-inch FPV freestyle quadcopter assembled from a parts kit &mdash; full mechanical build, every ESC, FC, VTX and motor connection soldered by hand.</p>
           <a class="more" href="projects/fpv-drone.html" aria-label="See more: FPV Drone Build">See more &rarr;</a>
         </div>
+      </article>
+    </div>
+
+    <h3 class="sub-label">More projects</h3>
+    <div class="rows">
+      <article class="row" id="gimbal">
+        <div>
+          <h3>Two-Axis Camera Gimbal</h3>
+          <p class="meta">Mechanical design, motor control &middot; supports the optical communication research</p>
+          <p class="card-text">A direct-drive two-axis pointing platform for the optical communication work above &mdash; built for precise tracking, not handheld stabilization.</p>
+        </div>
+        <div class="row-side"><span class="tag wip">Design study</span><a class="more" href="projects/gimbal.html" aria-label="See more: Two-Axis Camera Gimbal">See more &rarr;</a></div>
+      </article>
+      <article class="row" id="server">
+        <div>
+          <h3>Self-Hosted Server Infrastructure</h3>
+          <p class="meta">Solo &middot; systems and reliability</p>
+          <p class="card-text">The home server everything else I build runs on. Treated as production, because for me it is.</p>
+        </div>
+        <div class="row-side"><span class="tag live">Live</span><a class="more" href="projects/server-infrastructure.html" aria-label="See more: Self-Hosted Server Infrastructure">See more &rarr;</a></div>
       </article>
     </div>
   </div>
@@ -182,8 +211,9 @@
 
 <section id="skills">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">04</span><h2>Skills</h2></div>
-    <p class="sec-sub"></p>
+    <div class="sec-intro">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Skills</h2></div>
+    </div>
     <div class="skill-rows">
       <div class="skill-row"><h3>Controls &amp; Embedded</h3><div class="chips"><span class="chip">LQR</span><span class="chip">PID</span><span class="chip">State-space modeling</span>
           <span class="chip">CAN bus</span><span class="chip">BLE</span><span class="chip">I&sup2;C</span>
@@ -201,24 +231,11 @@
           <span class="chip">Linux</span><span class="chip">Git</span></div></div>
       <div class="skill-row"><h3>Coursework</h3><div class="chips"><span class="chip">Controls</span><span class="chip">Mechatronics</span>
           <span class="chip">Introduction to Autonomous Vehicles</span></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="certs">
-  <div class="wrap">
-    <div class="sec-head"><span class="sec-num">05</span><h2>Certifications</h2></div>
-    <p class="sec-sub"></p>
-    <div class="cert-grid">
-      <div class="cert">
-        <h3>SOLIDWORKS 2024 Essential Training</h3>
-        <div class="issuer">LinkedIn Learning</div>
-        <div class="date">Dec 2024 &middot; 10 hours</div>
-      </div>
-      <div class="cert">
-        <h3>Career Skills Certificate — Electronics II</h3>
-        <div class="issuer">Precision Exams by YouScience</div>
-        <div class="date">Apr 2022</div>
+      <div class="skill-row" id="certs"><h3>Certifications</h3>
+        <ul class="cert-list">
+          <li>SOLIDWORKS 2024 Essential Training <span class="issuer">&middot; LinkedIn Learning</span> <span class="date">&middot; Dec 2024 &middot; 10 hours</span></li>
+          <li>Career Skills Certificate — Electronics II <span class="issuer">&middot; Precision Exams by YouScience</span> <span class="date">&middot; Apr 2022</span></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -226,8 +243,10 @@
 
 <section id="contact">
   <div class="wrap">
-    <div class="sec-head"><span class="sec-num">06</span><h2>Get in touch</h2></div>
-    <p class="sec-sub">Open to internships and new-grad roles in controls, embedded systems and robotics &mdash; and working toward a master&rsquo;s in control systems.</p>
+    <div class="sec-intro">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Get in touch</h2></div>
+      <p class="sec-sub">Open to internships and new-grad roles in controls, embedded systems and robotics &mdash; and working toward a master&rsquo;s in control systems.</p>
+    </div>
     <div class="contact-row">
       <div><span class="lbl">Email</span><a class="eml" href="#" data-e="moc.liamg@72.hnivos">sovinh.27 [at] gmail [dot] com</a></div>
       <div><span class="lbl">LinkedIn</span><a href="https://www.linkedin.com/in/sovin-d-herzlinger-4093a0227" rel="noopener">sovin-d-herzlinger</a></div>
