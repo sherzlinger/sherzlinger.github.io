@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cycloidal Drive — Sovin Herzlinger</title>
+<meta name="description" content="A 10:1 cycloidal reducer for a pan axis, 3D printed and mounted directly on an ODrive M8325s brushless motor.">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#cycloidal">Home</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#cycloidal">&larr; Back</a>
+
+  <p class="eyebrow">Team project &middot; 10:1 reducer on an ODrive M8325s</p>
+  <h1>Cycloidal Drive</h1>
+  <p><span class="tag" style="margin-left:0">Built</span></p>
+  <div class="detail-top"><div class="build-media"><figure class="sim"><video src="../assets/img/cycloid-sim.mp4?v=2" poster="../assets/img/cycloid-sim.jpg?v=2" autoplay loop muted playsinline preload="metadata" aria-label="Simulation of the 10:1 cycloidal reducer: the cycloid disc wobbles on the eccentric input while the output turns once for every ten input turns, then the assembly explodes into its parts and closes back up"></video><figcaption>Simulation &middot; exploded view</figcaption></figure><div class="build-photos"><a href="../assets/img/cycloid-assembled.jpg?v=2" target="_blank" rel="noopener"><figure><img src="../assets/img/cycloid-assembled.jpg?v=2" alt="The printed cycloidal reducer assembled on top of the motor, with the ring-roller bearings visible between the base and the top plate" loading="lazy"><figcaption>Assembled</figcaption></figure></a><a href="../assets/img/cycloid-rollers.jpg?v=2" target="_blank" rel="noopener"><figure><img src="../assets/img/cycloid-rollers.jpg?v=2" alt="Close-up of the ring-roller stacks: bearings on printed spacers around the cycloid disc" loading="lazy"><figcaption>Ring rollers</figcaption></figure></a><a href="../assets/img/cycloid-top.jpg?v=2" target="_blank" rel="noopener"><figure><img src="../assets/img/cycloid-top.jpg?v=2" alt="Top view of the reducer's output, with the bearing cap and the output plate's screw pattern" loading="lazy"><figcaption>Output</figcaption></figure></a><a href="../assets/img/cycloid-motor.jpg?v=2" target="_blank" rel="noopener"><figure><img src="../assets/img/cycloid-motor.jpg?v=2" alt="Underside of the reducer showing the ODrive M8325s motor and its mounting plate" loading="lazy"><figcaption>M8325s mount</figcaption></figure></a></div></div></div>
+  <p>A 10:1 cycloidal reducer for a pan axis, 3D printed and mounted directly on an ODrive M8325s brushless motor. The geometry comes from a parametric generator that builds every part as solid CAD, checks the assembly for collisions through a full turn of the input, and exports toleranced print files.</p>
+  <ul class="detail-list">
+            <li><strong>11 ring rollers</strong> (624 bearings), 1.5&nbsp;mm eccentricity, a &Oslash;122&nbsp;mm housing, and 8 output pins running on 693 bearings; 6808 bearings carry the input and output.</li>
+            <li>Built <strong>in place on the motor</strong>: the eccentric hub bolts to the rotor face, the output reuses the motor's own 4 &times; M3 pattern, so the pan plate moves from the motor to the reducer unchanged.</li>
+            <li>The design passed both a fast swept clearance check (every 1&deg; of a full input turn) and an exact solid-boolean check before printing; press fits were tuned on printed test coupons.</li>
+            <li>The animation is the generator's own model of this build: ten input turns, one output turn.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">Cycloidal drive</span><span class="chip">ODrive M8325s</span><span class="chip">Python</span><span class="chip">build123d</span>
+            <span class="chip">three.js</span><span class="chip">3D printing</span>
+          </div>
+
+  <p style="margin-top:40px"><a href="../index.html#cycloidal">&larr; Back</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+</body>
+</html>

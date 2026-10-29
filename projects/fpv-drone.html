@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FPV Drone Build — Sovin Herzlinger</title>
+<meta name="description" content="A 5-inch FPV freestyle quadcopter assembled from a parts kit — full mechanical build, every ESC, FC, VTX and motor connection soldered by hand.">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#fpv">Home</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#fpv">&larr; Back</a>
+
+  <p class="eyebrow">Mechanical assembly, electronics, tuning</p>
+  <h1>FPV Drone Build</h1>
+  <p><span class="tag" style="margin-left:0">Complete</span></p>
+  <div class="detail-top"><div class="gallery photos"><figure><img src="../assets/img/drone-1.jpg?v=1" alt="The 5-inch FPV quad packed in its case with batteries and props"><figcaption>Built</figcaption></figure><figure><img src="../assets/img/drone-2.jpg?v=1" alt="Carbon-fiber frame with all four motors and the ESC stack mounted, before wiring"><figcaption>Frame + motors</figcaption></figure><figure><img src="../assets/img/drone-3.jpg?v=1" alt="Hand-soldered wires on the flight controller's UART pads"><figcaption>Hand soldering</figcaption></figure></div></div>
+  <p>A 5-inch FPV freestyle quadcopter assembled from a parts kit — full mechanical build, every ESC, FC, VTX and motor connection soldered by hand.</p>
+  <ul class="detail-list">
+            <li>Configured and tuned the flight controller in Betaflight: <strong>PID tuning for acro mode</strong>, rates and expo dialed in for freestyle, OSD layout, failsafe configuration and motor direction mapping.</li>
+            <li>Originally flew a <strong>TBS Crossfire receiver against a Spektrum transmitter</strong> &mdash; a non-native pairing that needed telemetry passthrough set up so RSSI, battery voltage and link quality could route back to the radio.</li>
+            <li><strong>Since migrated the radio link to ExpressLRS</strong>, which trades that bridging work for an open, natively-supported link.</li>
+            <li>Significant debugging across the Crossfire LUA scripts and Betaflight's serial port mapping to make that link work.</li>
+            <li>Final result: full acro-mode flight with live telemetry feedback to the radio.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">Betaflight</span><span class="chip">PID tuning</span><span class="chip">ExpressLRS</span><span class="chip">TBS Crossfire</span><span class="chip">Soldering</span>
+          </div>
+
+  <p style="margin-top:40px"><a href="../index.html#fpv">&larr; Back</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+</body>
+</html>

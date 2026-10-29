@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two-Axis Camera Gimbal — Sovin Herzlinger</title>
+<meta name="description" content="A direct-drive two-axis pointing platform for the optical communication work above — built for precise tracking, not handheld stabilization.">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#gimbal">Home</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#gimbal">&larr; Back</a>
+
+  <p class="eyebrow">Mechanical design, motor control &middot; supports the optical communication research</p>
+  <h1>Two-Axis Camera Gimbal</h1>
+  <p><span class="tag wip" style="margin-left:0">Design study</span></p>
+  <p>A direct-drive two-axis pointing platform for the optical communication work above &mdash; built for precise tracking, not handheld stabilization. Currently a costed design: parts are selected, nothing is ordered.</p>
+  <ul class="detail-list">
+            <li><strong>Direct-drive BLDC on both axes</strong> — no gearbox, so there's no backlash to fight in the pointing loop.</li>
+            <li>Specified around paired ODrive S1 controllers, M8325s 100&nbsp;KV motors and Jetson Orin Nano compute, with CAN between them.</li>
+            <li>Blocked on payload mass against cantilever load &mdash; the constraint that sets every other number in the design, and the reason nothing is ordered yet.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">ODrive S1</span><span class="chip">BLDC</span><span class="chip">NVIDIA Jetson</span><span class="chip">CAN</span>
+          </div>
+
+  <p style="margin-top:40px"><a href="../index.html#gimbal">&larr; Back</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+</body>
+</html>

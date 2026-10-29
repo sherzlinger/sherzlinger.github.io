@@ -19,11 +19,28 @@
 </nav>
 
 <div class="wrap article">
-  <a class="back" href="../index.html#work">&larr; Back to work</a>
+  <a class="back" href="../index.html#pendulum">&larr; Back</a>
 
   <p class="eyebrow">Controls Lab &mdash; Design Project</p>
   <h1>Inverted Pendulum</h1>
   <p class="tagline" style="max-width:54ch">A cart-pole system built from scratch, balanced upright by an LQR controller running at 600&nbsp;Hz across two Teensy microcontrollers, driving an ODrive S1 over a CAN bus.</p>
+
+  <section class="overview" style="padding:0;border:0">
+  <h2>Overview</h2>
+  <div class="detail-top"><div class="build-media"><figure class="sim"><img src="../assets/img/pendulum.jpg?v=4" alt="The inverted pendulum rig: a linear rail with a belt-driven cart on a 3D-printed truss base, wired to the motor and encoder"><figcaption>The rig</figcaption></figure><div class="build-photos"><a href="../assets/img/pendulum-rig.jpg" target="_blank" rel="noopener"><figure><img src="../assets/img/pendulum-rig.jpg" alt="The belt-driven cart on its linear rails, with the carbon-fiber pendulum rod hanging from the cart above the 3D-printed truss base" loading="lazy"><figcaption>Cart and pole</figcaption></figure></a><a href="../assets/img/pendulum-odrive.jpg" target="_blank" rel="noopener"><figure><img src="../assets/img/pendulum-odrive.jpg" alt="ODrive S1 motor controller mounted on the rig's printed frame, with its wiring" loading="lazy"><figcaption>ODrive S1</figcaption></figure></a><a href="../assets/img/pendulum-control-box.jpg" target="_blank" rel="noopener"><figure><img src="../assets/img/pendulum-control-box.jpg" alt="Open printed enclosure holding a perfboard with screw terminals and a DC-DC converter module" loading="lazy"><figcaption>Power enclosure</figcaption></figure></a><a href="../assets/img/pendulum-sensor-node.jpg" target="_blank" rel="noopener"><figure><img src="../assets/img/pendulum-sensor-node.jpg" alt="A hand holding a printed bracket with a perfboard and screw terminals, wired to the pendulum's angle encoder on the cart" loading="lazy"><figcaption>Encoder board</figcaption></figure></a></div></div></div>
+  <p>A 750&nbsp;mm cart-pole system built from scratch, balanced upright by a linear-quadratic regulator running across two Teensy microcontrollers, driving an ODrive S1 over a CAN bus.</p>
+  <ul class="detail-list">
+            <li>CAD'd the rail, cart and bearing assemblies, sourced the parts and <strong>hand-soldered the CAN protoboards</strong>.</li>
+            <li><strong>Distributed control architecture:</strong> a cart-side Teensy 4.0 reads pendulum angle from an AS5600 magnetic encoder over I²C and transmits it at 600&nbsp;Hz over a CAN bus to a Teensy 4.1, which closes a 600&nbsp;Hz loop and commands an ODrive S1.</li>
+            <li>Chose <strong>LQR over PID</strong> — a cart-pole has four states and one input, and LQR coordinates them through a single optimal gain matrix instead of four fighting loops.</li>
+            <li>Firmware state machine with four modes: IDLE, MANUAL homing on a trapezoidal trajectory, ARMED position-hold, and BALANCING.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">Teensy 4.0 / 4.1</span><span class="chip">ODrive S1</span><span class="chip">CAN bus</span>
+            <span class="chip">AS5600</span><span class="chip">LQR</span><span class="chip">C++</span><span class="chip">SOLIDWORKS</span>
+          </div>
+  </section>
+
 
   <h2>The system</h2>
   <table class="kv">
@@ -129,7 +146,7 @@ K = np.linalg.solve(R, B.T @ P)</pre>
     <strong>On tooling:</strong> I used GitHub Copilot and Claude for firmware assistance. The architecture decisions, the debugging, the LQR theory, the protocol design and the physical build were mine. AI handled boilerplate; the system-level work did not.
   </div>
 
-  <p style="margin-top:40px"><a href="../index.html#work">&larr; Back to work</a></p>
+  <p style="margin-top:40px"><a href="../index.html#pendulum">&larr; Back</a></p>
 </div>
 
 <footer class="wrap">

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Self-Hosted Server Infrastructure — Sovin Herzlinger</title>
+<meta name="description" content="The home server everything else I build runs on. Treated as production, because for me it is.">
+<link rel="stylesheet" href="../assets/style.css?v=3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230e1014'/><text y='23' x='16' text-anchor='middle' font-size='19' font-family='monospace' fill='%23ff8c42'>S</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <span class="nav-name">Sovin Herzlinger</span>
+    <a class="nav-link" href="../index.html#server">Home</a>
+    <a class="nav-link" href="../index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="wrap article">
+  <a class="back" href="../index.html#server">&larr; Back</a>
+
+  <p class="eyebrow">Solo &middot; systems and reliability</p>
+  <h1>Self-Hosted Server Infrastructure</h1>
+  <p><span class="tag live" style="margin-left:0">Live</span></p>
+  <p>The home server everything else I build runs on. Treated as production, because for me it is.</p>
+  <ul class="detail-list">
+            <li>Raspberry Pi 5 booting from NVMe in a multi-node topology, running containerized services.</li>
+            <li><strong>Private by construction:</strong> reachable only over an authenticated mesh VPN, with nothing exposed to the public internet.</li>
+            <li>Nightly automated backups that <strong>verify their own integrity</strong> and replicate offsite — plus a watchdog that reports silent failures, because a backup that quietly stops running is worse than none.</li>
+            <li>Two security audits against the running system; every high-severity finding closed.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">Linux</span><span class="chip">Docker</span><span class="chip">systemd</span>
+            <span class="chip">Tailscale</span><span class="chip">UFW</span><span class="chip">SQLite</span>
+          </div>
+
+  <p style="margin-top:40px"><a href="../index.html#server">&larr; Back</a></p>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Sovin Herzlinger</span>
+  <span>Hand-built. No frameworks, no trackers.</span>
+</footer>
+</body>
+</html>

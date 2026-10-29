@@ -19,11 +19,28 @@
 </nav>
 
 <div class="wrap article">
-  <a class="back" href="../index.html#work">&larr; Back to work</a>
+  <a class="back" href="../index.html#quickcheck">&larr; Back</a>
 
   <p class="eyebrow">Solo project &middot; In beta</p>
   <h1>QuickCheck</h1>
   <p class="tagline" style="max-width:52ch">A campus club platform for Cal Poly Pomona — QR join, event check-in, roster and a cash dues ledger — with every authorization decision enforced by Postgres, not by the app.</p>
+
+  <section class="overview" style="padding:0;border:0">
+  <h2>Overview</h2>
+  <div class="detail-top"><div class="gallery"><figure><img src="../assets/img/qc-login.png?v=3" alt="QuickCheck sign-in screen"><figcaption>Sign in</figcaption></figure><figure><img src="../assets/img/qc-home.png?v=3" alt="QuickCheck home screen: greeting, admin badge, week calendar, check-in and balance"><figcaption>Home</figcaption></figure><figure><img src="../assets/img/qc-discover.png?v=3" alt="QuickCheck discover screen for browsing campus clubs"><figcaption>Discover</figcaption></figure><figure><img src="../assets/img/qc-calendar.png?v=3" alt="QuickCheck calendar showing events across a member's clubs"><figcaption>Calendar</figcaption></figure><figure><img src="../assets/img/qc-manage.png?v=3" alt="QuickCheck manage screen with club requests, finances, reports and members"><figcaption>Manage</figcaption></figure></div></div>
+  <p>A campus club platform for Cal Poly Pomona — QR check-in, membership and dues tracking. Native iOS, in external TestFlight beta.</p>
+  <ul class="detail-list">
+            <li>Native iOS app in <strong>React Native / Expo</strong> against a <strong>Supabase Postgres</strong> backend, with row-level security policies enforced on every table rather than in app code.</li>
+            <li>QR-based joining and event check-in, multi-club membership with per-club officer roles, and a cash dues ledger with receipts.</li>
+            <li>Ran a <strong>full security review against the live database</strong> and closed every high-severity finding, verifying each backend fix by executing it as a real authenticated user inside an aborted transaction.</li>
+            <li>Shipped through Apple review to external TestFlight testers and iterated on two rounds of their feedback.</li>
+          </ul>
+  <div class="stack">
+            <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">TypeScript</span>
+            <span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">RLS</span><span class="chip">TestFlight</span>
+          </div>
+  </section>
+
 
   <table class="kv">
     <tr><td>App</td><td>Expo SDK&nbsp;57, React Native&nbsp;0.86, React&nbsp;19, Expo Router (typed file routes), iPhone only</td></tr>
@@ -63,7 +80,7 @@
     <strong>On tooling and review:</strong> I used Claude while building this, and had two AI reviewers sweep the backend policies and the client bundle in parallel. Every backend finding was reproduced against the live database inside an aborted transaction before I touched anything. The fixes are mine; so are the schema design, the multi-club model and the debugging.
   </div>
 
-  <p style="margin-top:40px"><a href="../index.html#work">&larr; Back to work</a></p>
+  <p style="margin-top:40px"><a href="../index.html#quickcheck">&larr; Back</a></p>
 </div>
 
 <footer class="wrap">
