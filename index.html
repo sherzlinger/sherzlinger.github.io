@@ -264,5 +264,20 @@
 </footer>
 
 <script>document.querySelectorAll("a.eml").forEach(function(a){var e=a.getAttribute("data-e").split("").reverse().join("");a.href="mailto:"+e;a.textContent=e;});</script>
+<script>
+/* Looping card videos: play only while on screen, never under reduced motion (the poster stays). */
+(function(){
+  var vids=[].slice.call(document.querySelectorAll("video[data-autoplay]"));
+  var rm=window.matchMedia("(prefers-reduced-motion: reduce)");
+  var seen=new Map();
+  function sync(v){ if(!rm.matches && seen.get(v)){ var p=v.play(); if(p&&p.catch)p.catch(function(){}); } else { v.pause(); } }
+  if("IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){seen.set(e.target,e.isIntersecting);sync(e.target);});},{threshold:.25});
+    vids.forEach(function(v){io.observe(v);});
+  } else { vids.forEach(function(v){seen.set(v,true);sync(v);}); }
+  var onChange=function(){vids.forEach(sync);};
+  if(rm.addEventListener)rm.addEventListener("change",onChange); else if(rm.addListener)rm.addListener(onChange);
+})();
+</script>
 </body>
 </html>
