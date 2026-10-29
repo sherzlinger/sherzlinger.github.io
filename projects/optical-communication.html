@@ -21,10 +21,18 @@
 <div class="wrap article">
   <a class="back" href="../index.html#optical">&larr; Back</a>
 
-  <p class="eyebrow">Research &middot; National research lab &middot; Sept 2026 &ndash; present</p>
+  <p class="eyebrow">Senior design &middot; With a national research lab &middot; Sept 2026 &ndash; present</p>
   <h1>Single-Photon Optical Communication</h1>
   <p><span class="tag live" style="margin-left:0">Ongoing</span></p>
-  <p>Free-space optical communication in the photon-starved regime &mdash; where the receiver counts individual photons rather than measuring a continuous optical power. Detecting single photons is what makes an optical link work across distances and power budgets where a conventional receiver would see nothing at all, which is why it underpins deep-space optical communication.</p>
+  <p>Free-space optical communication in the photon-starved regime &mdash; where the receiver counts individual photons rather than measuring a continuous optical power. Detecting single photons is what makes an optical link work across distances and power budgets where a conventional receiver would see nothing at all, which is why it underpins deep-space optical communication and quantum key distribution (QKD).</p>
+  <p>The project works from a published drone-based QKD experiment (<a href="https://arxiv.org/abs/2505.17587">arXiv:2505.17587</a>), partnered with a national research lab and another university team, over an ~18-month runway. The long-term goal is a link where one terminal flies on a drone.</p>
+
+  <table class="kv">
+    <tr><td>My role</td><td><strong>Project manager</strong> for the build, and technical lead for <strong>gimbal pointing controls</strong></td></tr>
+    <tr><td>December goal</td><td>Two ground terminals 5&nbsp;m apart holding a closed-loop 850&nbsp;nm free-space link, with bit error rate measured on an FPGA</td></tr>
+    <tr><td>Strategy</td><td>Prove the classical optical link and the pointing first; entangled photons and the full QKD protocol come after</td></tr>
+  </table>
+
   <h2>Why it has to be so precise</h2>
   <p>When the signal is counted one photon at a time, there is no margin to waste. A conventional receiver can afford to lose a fraction of a bright beam; a single-photon link cannot, because every photon that misses the detector is information that never arrives. The light has to be steered onto a very small target &mdash; a detector&rsquo;s active area or the core of a single-mode fiber, only a few micrometres across &mdash; and held there.</p>
   <ul class="detail-list">
@@ -33,16 +41,44 @@
     <li><strong>Background is the enemy.</strong> Stray light produces detector counts that look exactly like signal photons, so the optics, filtering and timing all have to keep the background far below the true signal.</li>
   </ul>
 
-  <h2>The optical setup</h2>
-  <p>The source starts with a <strong>405&nbsp;nm</strong> laser aimed into a nonlinear crystal. Inside it, a single 405&nbsp;nm photon is converted into a pair of <strong>entangled photons at 810&nbsp;nm</strong> &mdash; twice the wavelength, each carrying half the energy (spontaneous parametric down-conversion). The two photons leave the crystal at about <strong>30&deg;</strong> to either side of the pump beam, one to the left and one to the right, so each arm of the experiment has to be aligned to catch photons coming off at that exact angle.</p>
+  <h2>The photon source</h2>
+  <p>The quantum source starts with a <strong>405&nbsp;nm</strong> laser aimed into a nonlinear crystal. Inside it, a single 405&nbsp;nm photon is converted into a pair of <strong>entangled photons at 810&nbsp;nm</strong> &mdash; twice the wavelength, each carrying half the energy (spontaneous parametric down-conversion). The two photons leave the crystal at about <strong>30&deg;</strong> to either side of the pump beam, one to the left and one to the right, so each arm has to be aligned to catch photons coming off at that exact angle.</p>
+
+  <h2>The bench proof of concept</h2>
+  <p>Before any entangled photons, the link itself is proven with two attenuated 850&nbsp;nm lasers sharing one fiber:</p>
+  <ol class="detail-list">
+    <li>Two identical fiber-pigtailed 850&nbsp;nm lasers are merged by a <strong>99:1 fiber combiner</strong> &mdash; a bright <strong>clock</strong> channel (99%) and a faint <strong>data</strong> channel (1%).</li>
+    <li>The transmit <strong>fast steering mirror</strong> sends the beam across free space to the receiver.</li>
+    <li>The receive FSM catches it; an <strong>8% pickoff</strong> feeds the fine-pointing sensor and the other 92% goes to the detection chain.</li>
+    <li>An <strong>FPGA</strong> recovers the timing from the clock pulses, decodes the data and measures the bit error rate.</li>
+  </ol>
+  <p>Data uses binary <strong>pulse-position modulation</strong>: an early pulse in a time slot is one bit value, a late pulse the other. With one clock pulse per <em>N</em> data frames of length <em>T</em>, the data rate is <em>R</em> = <em>N</em> / ((<em>N</em>+1)&nbsp;<em>T</em>).</p>
+
+  <h2>Pointing, acquisition and tracking</h2>
+  <p>Pointing is three-stage and symmetric &mdash; every stage exists on both terminals, and each only has to land the beam inside the next stage&rsquo;s capture range.</p>
+  <table class="kv">
+    <tr><td>Coarse</td><td>RTK GPS &rarr; gimbal: find the other terminal&rsquo;s rough area (after December)</td></tr>
+    <tr><td>Medium</td><td>NIR camera tracking a four-diode IR beacon on the far terminal &rarr; gimbal: pose from the distortion of the pattern. Works in the dark, where printed markers fail.</td></tr>
+    <tr><td>Fine</td><td>Quadrant photodiode behind the 8% pickoff &rarr; fast steering mirror: closed-loop fine track</td></tr>
+  </table>
   <ul class="detail-list">
-    <li><strong>Fast steering mirrors (FSMs)</strong> do the fine pointing: small mirrors that tilt in microradian steps at high bandwidth to cancel jitter and drift faster than any motor stage could.</li>
-    <li>A <strong>two-axis gimbal</strong> does the coarse pointing &mdash; large, slow moves that bring the beam into the FSMs&rsquo; small correction range. That is the platform I am building for this work: direct drive, with no gearbox backlash in the loop (<a href="gimbal.html">see the gimbal</a>).</li>
-    <li>Coarse and fine stages together form a nested pointing loop, the standard architecture for keeping a narrow beam locked on target.</li>
+    <li>The gimbal&rsquo;s job is to land the beam inside the FSM&rsquo;s capture range; the FSM does the microradian work.</li>
+    <li>Tracking bandwidth is set by the vision chain &mdash; centroid accuracy, latency and frame rate &mdash; not by encoder resolution.</li>
   </ul>
+
+  <h2>The gimbal (my technical focus)</h2>
+  <p>Our terminal is a two-axis <strong>direct-drive</strong> gimbal: RLS M8325s motors on two ODrive S1 controllers, coordinated by a Teensy 4.1 (<a href="gimbal.html">see the gimbal</a>). The partner team&rsquo;s terminal runs its own controller, so a common angle-in / angle-out command interface is defined before the acquisition state machine is written.</p>
+  <ul class="detail-list">
+    <li>The onboard 12-bit encoder resolves 2&pi;/2<sup>12</sup> &asymp; 1.53&nbsp;mrad per count &mdash; enough for the coarse role, because the outer loop closes on the camera and corrects absolute encoder error away.</li>
+    <li>The real risk is slop the motor-side encoder can&rsquo;t see. The plan adds 14-bit load-side encoders if the pitch-axis rebuild measurement shows load-side error.</li>
+  </ul>
+
+  <h2>Running the project</h2>
+  <p>The build is organised into three workstreams &mdash; <strong>gimbal mechanical</strong>, <strong>pointing and controls software</strong>, and <strong>optical bench and comms</strong> &mdash; each with a lead, a bill of materials and a task list tied to one Gantt chart. The critical path runs through optics procurement, not the gimbals.</p>
+
   <div class="stack">
-            <span class="chip">Photonics</span><span class="chip">Free-space optics</span>
-            <span class="chip">Single-photon detection</span><span class="chip">Precision pointing</span>
+            <span class="chip">Project management</span><span class="chip">Photonics</span><span class="chip">Free-space optics</span>
+            <span class="chip">Single-photon detection</span><span class="chip">Precision pointing</span><span class="chip">Fast steering mirrors</span><span class="chip">FPGA</span><span class="chip">QKD</span>
           </div>
 
   <p style="margin-top:40px"><a href="../index.html#optical">&larr; Back</a></p>
