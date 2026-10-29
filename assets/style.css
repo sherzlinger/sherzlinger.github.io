@@ -182,7 +182,7 @@ h2 { font-size: clamp(24px, 3vw, 28px); line-height: 1.2; letter-spacing: -.02em
 .more { margin-top: auto; font-size: 13px; font-weight: 600; }
 .more::after { content: ""; position: absolute; inset: 0; }   /* whole card/row is the click target */
 .more:hover { text-decoration: none; }
-.more:focus-visible { outline: none; }
+@supports selector(:has(*)) { .more:focus-visible { outline: none; } }   /* card/row draws the ring instead */
 .card:hover .more, .row:hover .more { text-decoration: underline; text-underline-offset: 3px; }
 
 /* large feature cards */
